@@ -37,24 +37,15 @@ export const validateUserRequest = [
 ];
 
 export const validateRestaurantRequest = [
-  body("restaurantName")
-    .isString()
-    .notEmpty()
-    .withMessage("Enter a restaurant name"),
+  body("restaurantName").notEmpty().withMessage("Enter a restaurant name"),
   body("restaurantAddress")
-    .isString()
     .notEmpty()
     .withMessage("Enter a restaurant address"),
   body("restaurantPinCode")
-    .isString()
     .notEmpty()
     .withMessage("Enter a restaurant pin code"),
-  body("restaurantCity")
-    .isString()
-    .notEmpty()
-    .withMessage("Enter a restaurant city"),
+  body("restaurantCity").notEmpty().withMessage("Enter a restaurant city"),
   body("restaurantCountry")
-    .isString()
     .notEmpty()
     .withMessage("Enter a restaurant country"),
   body("deliveryPrice")
