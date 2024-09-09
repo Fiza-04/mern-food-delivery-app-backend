@@ -9,6 +9,19 @@ interface MulterFiles {
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
+    // Parsing JSON string inputs
+    // req.body.cuisines = JSON.parse(req.body.cuisines);
+    // req.body.menuItems = JSON.parse(req.body.menuItems);
+
+    // // Convert numeric fields
+    // req.body.deliveryPrice = parseFloat(req.body.deliveryPrice);
+    // req.body.estimatedDeliveryTimeFrom = parseFloat(
+    //   req.body.estimatedDeliveryTimeFrom
+    // );
+    // req.body.estimatedDeliveryTimeTo = parseFloat(
+    //   req.body.estimatedDeliveryTimeTo
+    // );
+
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
     if (existingRestaurant) {

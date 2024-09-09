@@ -37,7 +37,10 @@ export const validateUserRequest = [
 ];
 
 export const validateRestaurantRequest = [
-  body("restaurantName").notEmpty().withMessage("Enter a restaurant name"),
+  body("restaurantName")
+    .isString()
+    .notEmpty()
+    .withMessage("Enter a restaurant name"),
   body("restaurantAddress")
     .notEmpty()
     .withMessage("Enter a restaurant address"),
@@ -52,14 +55,10 @@ export const validateRestaurantRequest = [
     .isFloat({ min: 0 })
     .notEmpty()
     .withMessage("Enter a valid delivery price"),
-  body("estimatedDeliveryTimeFrom")
+  body("estimatedDeliveryTime")
     .isFloat({ min: 0 })
     .notEmpty()
-    .withMessage("Enter a valid delivery time min"),
-  body("estimatedDeliveryTimeTo")
-    .isFloat({ min: 0 })
-    .notEmpty()
-    .withMessage("Enter a valid delivery time max"),
+    .withMessage("Enter a valid delivery time"),
   body("cuisines")
     .isArray()
     .not()

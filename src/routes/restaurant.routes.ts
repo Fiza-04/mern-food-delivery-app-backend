@@ -24,7 +24,7 @@ const multiUpload = upload.fields([
 
 router.post(
   "/",
-  validateRestaurantRequest,
+  // validateRestaurantRequest,
   jwtCheck,
   jwtParse,
   multiUpload,
