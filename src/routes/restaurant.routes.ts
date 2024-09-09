@@ -1,6 +1,10 @@
 import express from "express";
 import multer from "multer";
-import { createRestaurant } from "../controllers/restaurant.controllers";
+import {
+  createRestaurant,
+  getRestaurantData,
+  updateRestaurantData,
+} from "../controllers/restaurant.controllers";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import { validateRestaurantRequest } from "../middleware/validation";
 
@@ -20,7 +24,7 @@ const multiUpload = upload.fields([
   { name: "menuItemImageFile", maxCount: 20 },
 ]);
 
-// router.get("/", getRestaurantData);
+router.get("/", jwtCheck, jwtParse, getRestaurantData);
 
 router.post(
   "/",
@@ -31,7 +35,7 @@ router.post(
   createRestaurant
 );
 
-// router.put("/", updateRestaurantData);
+router.put("/", jwtCheck, jwtParse, multiUpload, updateRestaurantData);
 
 // router.delete("/", deleteRestaurant);
 
