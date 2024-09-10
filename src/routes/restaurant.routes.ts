@@ -3,7 +3,7 @@ import multer from "multer";
 import {
   createRestaurant,
   getRestaurantData,
-  updateRestaurantData,
+  // updateRestaurantData,
 } from "../controllers/restaurant.controllers";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import { validateRestaurantRequest } from "../middleware/validation";
@@ -35,7 +35,7 @@ router.post(
   createRestaurant
 );
 
-router.put("/", jwtCheck, jwtParse, multiUpload, updateRestaurantData);
+// router.put("/", jwtCheck, jwtParse, multiUpload, updateRestaurantData);
 
 // router.delete("/", deleteRestaurant);
 

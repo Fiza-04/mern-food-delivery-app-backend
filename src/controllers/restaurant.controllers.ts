@@ -99,104 +99,101 @@ export const createRestaurant = async (req: Request, res: Response) => {
   }
 };
 
-export const updateRestaurantData = async (req: Request, res: Response) => {
-  try {
-    const { name, addressLine1, addressLine2, postcode, city, country } =
-      req.body;
+// export const updateRestaurantData = async (req: Request, res: Response) => {
+//   try {
+//     const restaurant = await Restaurant.findOne({ user: req.userId });
 
-    const restaurant = await Restaurant.findOne({ user: req.userId });
+//     if (!restaurant) {
+//       return res.status(404).json({ message: "Restaurant not found" });
+//     }
 
-    if (!restaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
-    }
+//     restaurant.restaurantName = req.body.restaurantName;
+//     restaurant.restaurantAddress = req.body.restaurantAddress;
+//     restaurant.restaurantPinCode = req.body.restaurantPinCode;
+//     restaurant.restaurantCity = req.body.restaurantCity;
+//     restaurant.restaurantCountry = req.body.restaurantCountry;
+//     restaurant.deliveryPrice = req.body.deliveryPrice;
+//     restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime;
+//     restaurant.cuisines = req.body.cuisines;
+//     restaurant.menuItems = req.body.menuItems;
+//     restaurant.isAcceptingOrders = req.body.isAcceptingOrders;
+//     // restaurant.status = req.body.status;
+//     restaurant.lastUpdated = new Date();
 
-    restaurant.restaurantName = req.body.restaurantName;
-    restaurant.restaurantAddress = req.body.restaurantAddress;
-    restaurant.restaurantPinCode = req.body.restaurantPinCode;
-    restaurant.restaurantCity = req.body.restaurantCity;
-    restaurant.restaurantCountry = req.body.restaurantCountry;
-    restaurant.deliveryPrice = req.body.deliveryPrice;
-    restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime;
-    restaurant.cuisines = req.body.cuisines;
-    restaurant.menuItems = req.body.menuItems;
-    restaurant.isAcceptingOrders = req.body.isAcceptingOrders;
-    // restaurant.status = req.body.status;
-    restaurant.lastUpdated = new Date();
+//     // if (req.file) {
+//     //   const imageUrl = await uploadImages(
+//     //     req.files as MulterFiles,
+//     //     req.body.menuItems
+//     //   );
+//     //   restaurant.imageFile = imageUrl.restaurantImageURL;
+//     //   restaurant.menuItems = imageUrl.updatedMenuItems as any;
+//     // }
+//     const files = req.files as MulterFiles | undefined;
+//     const restaurantImage = files?.imageFile?.[0];
+//     if (!restaurantImage) {
+//       console.log(restaurantImage);
+//       return res
+//         .status(400)
+//         .json({ message: "Restaurant image file is required" });
+//     }
 
-    // if (req.file) {
-    //   const imageUrl = await uploadImages(
-    //     req.files as MulterFiles,
-    //     req.body.menuItems
-    //   );
-    //   restaurant.imageFile = imageUrl.restaurantImageURL;
-    //   restaurant.menuItems = imageUrl.updatedMenuItems as any;
-    // }
-    const files = req.files as MulterFiles | undefined;
-    const restaurantImage = files?.imageFile?.[0];
-    if (!restaurantImage) {
-      console.log(restaurantImage);
-      return res
-        .status(400)
-        .json({ message: "Restaurant image file is required" });
-    }
+//     // Upload main restaurant image
+//     const base64Image = Buffer.from(restaurantImage.buffer).toString("base64");
+//     const dataURI = `data:${restaurantImage.mimetype};base64,${base64Image}`;
+//     const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
 
-    // Upload main restaurant image
-    const base64Image = Buffer.from(restaurantImage.buffer).toString("base64");
-    const dataURI = `data:${restaurantImage.mimetype};base64,${base64Image}`;
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+//     // Handling menu item image uploads
+//     const menuItems = await Promise.all(
+//       (req.body.menuItems || []).map(async (menuItem: any, index: number) => {
+//         const menuItemFile = files?.menuItemImageFile?.[index];
 
-    // Handling menu item image uploads
-    const menuItems = await Promise.all(
-      (req.body.menuItems || []).map(async (menuItem: any, index: number) => {
-        const menuItemFile = files?.menuItemImageFile?.[index];
+//         let itemImageURL = "";
 
-        let itemImageURL = "";
+//         if (menuItemFile) {
+//           const menuItemImageBase64 = Buffer.from(menuItemFile.buffer).toString(
+//             "base64"
+//           );
+//           const menuItemImageURI = `data:${menuItemFile.mimetype};base64,${menuItemImageBase64}`;
+//           const menuItemUploadResponse = await cloudinary.v2.uploader.upload(
+//             menuItemImageURI
+//           );
+//           console.log(
+//             `Cloudinary upload for menu item ${index}:`,
+//             menuItemUploadResponse
+//           );
+//           itemImageURL = menuItemUploadResponse.url;
+//         } else {
+//           console.warn(`No image file found for menu item at index ${index}`);
+//         }
 
-        if (menuItemFile) {
-          const menuItemImageBase64 = Buffer.from(menuItemFile.buffer).toString(
-            "base64"
-          );
-          const menuItemImageURI = `data:${menuItemFile.mimetype};base64,${menuItemImageBase64}`;
-          const menuItemUploadResponse = await cloudinary.v2.uploader.upload(
-            menuItemImageURI
-          );
-          console.log(
-            `Cloudinary upload for menu item ${index}:`,
-            menuItemUploadResponse
-          );
-          itemImageURL = menuItemUploadResponse.url;
-        } else {
-          console.warn(`No image file found for menu item at index ${index}`);
-        }
+//         return {
+//           ...menuItem,
+//           menuItemImageFile: itemImageURL, // Set the uploaded URL or keep empty
+//         };
+//       })
+//     );
 
-        return {
-          ...menuItem,
-          menuItemImageFile: itemImageURL, // Set the uploaded URL or keep empty
-        };
-      })
-    );
+//     // const imageUrl = await uploadImages(
+//     //   req.files as MulterFiles,
+//     //   req.body.menuItems
+//     // );
 
-    // const imageUrl = await uploadImages(
-    //   req.files as MulterFiles,
-    //   req.body.menuItems
-    // );
+//     // Create the restaurant with images set
+//     const updatedRestaurant = new Restaurant({
+//       ...req.body,
+//       imageFile: uploadResponse,
+//       menuItems: menuItems,
+//       user: new mongoose.Types.ObjectId(req.userId),
+//       lastUpdated: new Date(),
+//     });
 
-    // Create the restaurant with images set
-    const updatedRestaurant = new Restaurant({
-      ...req.body,
-      imageFile: uploadResponse,
-      menuItems: menuItems,
-      user: new mongoose.Types.ObjectId(req.userId),
-      lastUpdated: new Date(),
-    });
-
-    await updatedRestaurant.save();
-    res.status(200).send(updatedRestaurant);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error updating restaurant" });
-  }
-};
+//     await updatedRestaurant.save();
+//     res.status(200).send(updatedRestaurant);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Error updating restaurant" });
+//   }
+// };
 
 // const uploadImages = async (files: MulterFiles, menuItems: any[]) => {
 //   try {
