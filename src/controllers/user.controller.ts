@@ -44,7 +44,15 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { name, addressLine1, addressLine2, postcode, city, country } = req.body;
+    const {
+      name,
+      phoneNumber,
+      addressLine1,
+      addressLine2,
+      postcode,
+      city,
+      country,
+    } = req.body;
 
     const user = await User.findById(req.userId);
 
@@ -53,6 +61,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 
     user.name = name;
+    user.phoneNumber = phoneNumber;
     user.addressLine1 = addressLine1;
     user.addressLine2 = addressLine2;
     user.postcode = postcode;
