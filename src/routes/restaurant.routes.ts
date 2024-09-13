@@ -5,7 +5,6 @@ import {
   getAllRestaurants,
   getRestaurantData,
   updateRestaurantData,
-  // updateRestaurantData,
 } from "../controllers/restaurant.controllers";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import { validateRestaurantRequest } from "../middleware/validation";
