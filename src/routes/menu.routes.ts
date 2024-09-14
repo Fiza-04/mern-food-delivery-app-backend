@@ -27,8 +27,8 @@ router.get("/all", getAllMenus);
 
 router.post("/add", addMenu);
 
-router.put("/edit", updateMenu);
+router.put("/edit/:id", updateMenu);
 
-router.delete("/delete", deleteMenu);
+router.delete("/delete/:id", deleteMenu);
 
 export default router;

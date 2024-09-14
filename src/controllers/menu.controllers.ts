@@ -36,5 +36,48 @@ export const addMenu = async (req: Request, res: Response) => {
   }
 };
 
-export const updateMenu = async (req: Request, res: Response) => {};
-export const deleteMenu = async (req: Request, res: Response) => {};
+export const updateMenu = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Menu Id" });
+    }
+
+    const updatedMenu = await Menu.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true }
+    );
+
+    if (!updatedMenu) {
+      return res.status(404).json({ message: "Menu not found" });
+    }
+
+    res.status(200).json(updatedMenu);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: `Error Updating Menu: ${error}` });
+  }
+};
+
+export const deleteMenu = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Menu Id" });
+    }
+
+    const deleteData = await Menu.findByIdAndDelete(id);
+
+    if (!deleteData) {
+      return res.status(404).json({ message: "Menu not found" });
+    }
+
+    res.status(200).json({ message: "Data Deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: `Error Deleting Menu: ${error}` });
+  }
+};
