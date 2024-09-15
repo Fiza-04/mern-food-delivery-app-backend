@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/user.routes";
 import restaurantRoutes from "./routes/restaurant.routes";
 import menuRoutes from "./routes/menu.routes";
+import menuItemRoutes from "./routes/menuItem.routes";
 import { v2 as cloudinary } from "cloudinary";
 
 mongoose
@@ -29,6 +30,7 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/user", userRoutes);
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/menu", menuRoutes);
+app.use("/api/menu-item", menuItemRoutes);
 
 app.listen(5000, () => {
   console.log("Server started on localhost:5000");
