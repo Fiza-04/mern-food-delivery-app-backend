@@ -23,9 +23,9 @@ const upload = multer({
 //   // { name: "menuItemImageFile", maxCount: 20 },
 // ]);
 
-router.get("/all", getAllMenus);
+router.get("/all/:restaurantId", getAllMenus);
 
-router.post("/add", addMenu);
+router.post("/add/:restaurantId", addMenu);
 
 router.put("/edit/:id", updateMenu);
 

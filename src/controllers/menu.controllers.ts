@@ -4,7 +4,15 @@ import mongoose from "mongoose";
 
 export const getAllMenus = async (req: Request, res: Response) => {
   try {
-    const menu = await Menu.find();
+    const { restaurantId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(restaurantId)) {
+      return res
+        .status(400)
+        .json({ message: "No such restaurant (Invalid restaurant ID)" });
+    }
+
+    const menu = await Menu.find({ restaurantId: restaurantId });
     res.status(200).json(menu);
   } catch (error) {
     console.log(error);
@@ -14,8 +22,15 @@ export const getAllMenus = async (req: Request, res: Response) => {
 
 export const addMenu = async (req: Request, res: Response) => {
   try {
+    const { restaurantId } = req.params;
+
+    // Check if the provided restaurantId is valid
+    if (!mongoose.Types.ObjectId.isValid(restaurantId)) {
+      return res.status(400).json({ message: "Invalid restaurant ID" });
+    }
+
     const existingMenu = await Menu.findOne({
-      restaurantId: req.userId,
+      restaurantId: restaurantId,
       menuName: req.body.menuName,
     });
 

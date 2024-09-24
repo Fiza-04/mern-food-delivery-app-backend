@@ -58,6 +58,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
     const restaurantImage = files?.imageFile?.[0];
 
     if (!restaurantImage) {
+    
       return res
         .status(400)
         .json({ message: "Restaurant image file is required" });
