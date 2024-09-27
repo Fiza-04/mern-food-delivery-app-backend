@@ -8,7 +8,7 @@ const router = express.Router();
 // router.get("/:id", getMenuItemData);
 
 // check auth, create new user
-router.post("/add", createMenuItem);
+router.post("/add/:menuId", createMenuItem);
 
 // check auth, extract auth token, validate access token, update user
 // router.put("/", updateMenuItem);

@@ -40,7 +40,7 @@ export const addMenu = async (req: Request, res: Response) => {
 
     const menu = new Menu({
       ...req.body,
-      restaurantId: new mongoose.Types.ObjectId(req.userId),
+      restaurantId: new mongoose.Types.ObjectId(restaurantId),
     });
 
     await menu.save();

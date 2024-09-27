@@ -3,14 +3,25 @@ import MenuItem from "../modals/menuitem.modals";
 
 export const createMenuItem = async (req: Request, res: Response) => {
   try {
-    const { itemName, itemDescription, itemPrice, extras, menuItemActive } =
-      req.body;
+    const { menuId } = req.params;
+
+    if (!menuId) {
+      return res.status(404).json({ message: "No Such Menu Found!" });
+    }
+
+    const existingMenuItem = await MenuItem.findOne({
+      menuId: menuId,
+      itemName: req.body.itemName,
+    });
+
+    if (existingMenuItem) {
+      return res.status(409).json({ message: "This Menu Item already Exists" });
+    }
+
     const newItem = new MenuItem({
-      itemName,
-      itemDescription,
-      itemPrice: parseFloat(itemPrice),
-      extras: JSON.parse(extras || "[]"),
-      menuItemActive: menuItemActive === "true",
+      ...req.body,
+      itemPrice: parseFloat(req.body.itemPrice),
+      extras: JSON.parse(req.body.extras || "[]"),
       menuItemImageFile: req.file ? req.file.path : null,
     });
 
