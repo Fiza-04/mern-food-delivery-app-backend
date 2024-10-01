@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Menu from "../modals/menu.modal";
 import mongoose from "mongoose";
+import MenuItem from "../modals/menuitem.modals";
 
 export const getAllMenus = async (req: Request, res: Response) => {
   try {
@@ -13,6 +14,7 @@ export const getAllMenus = async (req: Request, res: Response) => {
     }
 
     const menu = await Menu.find({ restaurantId: restaurantId });
+    console.log("menu => ", menu);
     res.status(200).json(menu);
   } catch (error) {
     console.log(error);

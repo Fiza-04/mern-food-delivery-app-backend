@@ -1,7 +1,9 @@
 import express from "express";
 import {
   createMenuItem,
+  deleteMenuItem,
   getMenuItemData,
+  updateMenuItem,
 } from "../controllers/menuItem.controller";
 import multer from "multer";
 
@@ -23,6 +25,8 @@ router.get("/:menuId", getMenuItemData);
 router.post("/add/:menuId", upload.single("menuItemImageFile"), createMenuItem);
 
 // check auth, extract auth token, validate access token, update user
-// router.put("/", updateMenuItem);
+router.put("/edit", upload.single("menuItemImageFile"), updateMenuItem);
+
+router.delete("/delete", deleteMenuItem);
 
 export default router;
